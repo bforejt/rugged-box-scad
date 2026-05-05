@@ -6,9 +6,11 @@
  */
 
 include <rugged-box-library.scad>;
-include <../lib/gridfinity-rebuilt-openscad/standard.scad>;
+include <../lib/gridfinity-rebuilt-openscad/src/core/standard.scad>;
 use <../lib/gridfinity-rebuilt-openscad/gridfinity-rebuilt-baseplate.scad>;
-use <../lib/gridfinity-rebuilt-openscad/gridfinity-rebuilt-utility.scad>;
+use <../lib/gridfinity-rebuilt-openscad/src/core/base.scad>;
+use <../lib/gridfinity-rebuilt-openscad/src/core/gridfinity-rebuilt-holes.scad>;
+use <../lib/gridfinity-rebuilt-openscad/src/helpers/shapes.scad>;
 
 /* [Rendering] */
 // Part selection. Note: Assembled box previews show latches without chamfers for performance reasons.
@@ -107,14 +109,14 @@ bottom_height = (
     Bottom_Height * gridfinity_height_increment
     + gridfinity_base_extra_height(hole=true)
 );
-top_height = Top_Height * gridfinity_height_increment + h_lip;
+top_height = Top_Height * gridfinity_height_increment + STACKING_LIP_HEIGHT;
 
-corner_radius = r_base;
+corner_radius = BASE_TOP_RADIUS;
 
 stackable_plate_offset = 3.4;
 stackable_top_plate_offset = -0.8;
 stackable_bottom_base_offset = -0.6;
-top_base_offset = -(h_base - h_lip);
+top_base_offset = -(BASE_HEIGHT - STACKING_LIP_HEIGHT);
 
 stacking_separation = Gridfinity_Stackable ? 1.6 : 0;
 
@@ -170,14 +172,28 @@ function gridfinity_base_plate_style() = (
 );
 
 function gridfinity_base_extra_height(hole) = (
-    gridfinity_base_plate_magnet_height() ? (hole ? h_hole : 0) : 0
+    gridfinity_base_plate_magnet_height() ? (hole ? MAGNET_HOLE_DEPTH : 0) : 0
 );
 
 // Modules
 
-module gridfinity_rectangle(adjust=0, height=h_base * 2) {
-    rounded_rectangle(width + adjust, length + adjust, height, r_base);
+module gridfinity_rectangle(adjust=0, height=BASE_HEIGHT * 2) {
+    linear_extrude(height=height)
+    rounded_square(
+        [width + adjust, length + adjust],
+        BASE_TOP_RADIUS,
+        center=true
+    );
 }
+
+function gridfinity_hole_options() = bundle_hole_options(
+    refined_hole=false,
+    magnet_hole=gridfinity_base_plate_magnets_enabled(),
+    screw_hole=false,
+    crush_ribs=true,
+    chamfer=true,
+    supportless=false
+);
 
 module gridfinity_baseplate(expand=false) {
     extra_depth = gridfinity_base_extra_height(hole=true);
@@ -187,34 +203,43 @@ module gridfinity_baseplate(expand=false) {
         square([(Width + 1) * Cell_Size, (Length + 1) * Cell_Size], center=true);
         translate([0, 0, extra_depth])
         gridfinityBaseplate(
-            Width,
-            Length,
+            [Width, Length],
             Cell_Size,
-            expand ? ((Width + 1) * Cell_Size) : 0,
-            expand ? ((Length + 1) * Cell_Size) : 0,
+            [
+                expand ? ((Width + 1) * Cell_Size) : 0,
+                expand ? ((Length + 1) * Cell_Size) : 0
+            ],
             gridfinity_base_plate_style(),
-            gridfinity_base_plate_magnets_enabled(),
-            0,
-            0,
+            gridfinity_hole_options(),
             0
         );
     }
 }
 
 module gridfinity_base(w=Width, l=Length, hole=false, off=0) {
-    gridfinityBase(w, l, Cell_Size, 0, 0, hole ? 1 : 0, off=off);
+    // Pre-refactor kennetek's gridfinityBase took an `off` parameter that
+    // shrank/grew the base XY dimensions. The new API has no equivalent;
+    // approximate by uniformly scaling XY (Z preserved). At Cell_Size=42,
+    // off=-0.2 → scale factor 0.9952 — base radius shrinks by ~0.02mm.
+    scale_xy = (Cell_Size + off) / Cell_Size;
+    scale([scale_xy, scale_xy, 1])
+    gridfinityBase(
+        [w, l],
+        [Cell_Size, Cell_Size],
+        hole ? gridfinity_hole_options() : bundle_hole_options()
+    );
 }
 
 module gridfinity_bottom_base(hole=false) {
     intersection() {
-        translate([0, 0, h_base])
+        translate([0, 0, BASE_HEIGHT])
         mirror([0, 0, 1])
         gridfinity_base(hole=hole);
         gridfinity_rectangle(adjust=1.6);
     }
 }
 
-module rbox_interior_base(height = h_base * 2) {
+module rbox_interior_base(height = BASE_HEIGHT * 2) {
     intersection() {
         rbox_interior(cut_height=height);
         rbox_for_interior()
@@ -282,12 +307,12 @@ module gridfinity_top_base() {
     rbox_for_interior()
     intersection() {
         translate([0, 0, top_base_offset])
-        translate([0, 0, h_base])
+        translate([0, 0, BASE_HEIGHT])
         mirror([0, 0, 1])
         for (i = [0:1:Length - 1])
         translate([0, (i - Length / 2 + 0.5) * Cell_Size, 0])
         gridfinity_top_base_strip(i);
-        linear_extrude(height=h_base * 2)
+        linear_extrude(height=BASE_HEIGHT * 2)
         square([width + 1.6, length + 1.6], center=true);
     }
 }
@@ -315,7 +340,7 @@ module custom_top() {
             extra_depth = gridfinity_base_extra_height(hole=true);
             translate([0, 0, stackable_top_plate_offset])
             translate([0, 0, stackable_bottom_base_offset])
-            translate([0, 0, h_base + extra_depth])
+            translate([0, 0, BASE_HEIGHT + extra_depth])
             rbox_for_interior()
             mirror([0, 0, 1])
             gridfinity_baseplate_cut();

@@ -36,7 +36,7 @@ rugged-box code.
 | Source | License | Pinned commit |
 | --- | --- | --- |
 | [smkent/monoscad](https://github.com/smkent/monoscad) (rugged-box and gridfinity/rugged-box subdirs) | CC BY-SA 4.0 | [`a980c0e`](https://github.com/smkent/monoscad/commit/a980c0e4a83d43316286d994b0bda67a6889529a) |
-| [kennetek/gridfinity-rebuilt-openscad](https://github.com/kennetek/gridfinity-rebuilt-openscad) (submodule at [`lib/gridfinity-rebuilt-openscad`](lib/gridfinity-rebuilt-openscad)) | MIT — see [LICENSES/MIT-gridfinity-rebuilt.txt](LICENSES/MIT-gridfinity-rebuilt.txt) | [`0b7bf6e`](https://github.com/kennetek/gridfinity-rebuilt-openscad/commit/0b7bf6ee7897e68b5c308e5926cd2cb507737822) |
+| [kennetek/gridfinity-rebuilt-openscad](https://github.com/kennetek/gridfinity-rebuilt-openscad) (submodule at [`lib/gridfinity-rebuilt-openscad`](lib/gridfinity-rebuilt-openscad)) | MIT — see [LICENSES/MIT-gridfinity-rebuilt.txt](LICENSES/MIT-gridfinity-rebuilt.txt) | [`910e22d`](https://github.com/kennetek/gridfinity-rebuilt-openscad/commit/910e22d8607fd7f5f51ad5e5cbc5287a76810bfd) |
 
 The MIT submodule is one-way compatible into CC BY-SA 4.0; the same
 arrangement is used by the upstream monoscad repo.
