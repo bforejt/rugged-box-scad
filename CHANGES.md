@@ -54,6 +54,23 @@ shrunk/expanded layouts).
   baseplate generation, and stacking-lip generation rebound to
   `Cell_Size`.
 
+## 2026-05-05 — `[upstream-candidate]` End-stop bar follows stand-foot contour
+
+When `Stand_On_Back=true` and `Hinge_End_Stops=true` are both enabled,
+the end-stop bar between the hinges grows a foot-shaped protrusion at
+its bottom so its contour matches the corner stand feet on either
+side. The corner feet themselves are unchanged (still aligned with the
+hinge ribs above). The result reads as one continuous arch across the
+back wall: feet at the corners, end-stop in the middle, all merging
+into a single wide protrusion at low Z, while the end-stop bar stays
+narrow at higher Z. When `Stand_On_Back=false`, the end-stop bar is
+exactly the existing geometry.
+
+- `src/rugged-box-library.scad` — `_box_hinge_rib_bottom_end_stop`
+  conditionally emits an additional `_box_stand_foot_body(width=width)`
+  inside its rotated frame when `$b_stand_on_back` is true. Net diff
+  from main: 7 lines added.
+
 ## 2026-05-03 — `[upstream-candidate]` Migrate to current kennetek API
 
 Bumped the `lib/gridfinity-rebuilt-openscad` submodule from `0b7bf6e`

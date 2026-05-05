@@ -1411,6 +1411,13 @@ module _box_hinge_rib_bottom_end_stop(width=0) {
             _round_shape($b_edge_radius)
             square([ww, ww * 2], center=true);
         }
+        // When stand-on-back feet are active, extend the end-stop bar's
+        // bottom with a foot-shaped protrusion so the bar's contour
+        // matches the corner feet at low Z and they read as one
+        // continuous arch across the back wall.
+        if ($b_stand_on_back) {
+            _box_stand_foot_body(width=width);
+        }
     }
 }
 
