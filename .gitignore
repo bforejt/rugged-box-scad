@@ -8,6 +8,8 @@ build/
 # OpenSCAD
 *.csg
 *.echo
+# Customizer parameter sets, saved as <basename>.json next to the .scad
+src/*.json
 
 # SCons
 .sconsign.dblite
