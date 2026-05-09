@@ -1454,10 +1454,17 @@ module _box_hinge_ribs() {
 // Box back stand feet (matching hinge protrusion at the bottom-back of the box bottom)
 
 module _box_stand_foot_body(width=0) {
-    rib_hull_height = (
+    // Clamp the rib-shape support column to the box's outer height so
+    // it doesn't poke above the box on small Bottom_Height values.
+    // _box_attachment_rib_cut clips the inside-the-wall zone up to
+    // wall_thickness + outer_height; without this clamp the column
+    // overshoots that range and survives as floating slivers above
+    // the box top.
+    rib_hull_height = min(
         screw_eyelet_radius * 3
         + 2 * ($b_wall_thickness + $b_rib_width)
-        + $b_corner_radius * 1.5
+        + $b_corner_radius * 1.5,
+        $b_outer_height
     );
     difference() {
         hull() {
