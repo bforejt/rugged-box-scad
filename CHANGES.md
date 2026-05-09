@@ -54,6 +54,32 @@ shrunk/expanded layouts).
   baseplate generation, and stacking-lip generation rebound to
   `Cell_Size`.
 
+## 2026-05-06 — `[upstream-candidate]` Fix stand-foot floating slivers on short boxes
+
+`_box_stand_foot_body` computed `rib_hull_height` from
+`screw_eyelet_radius`, `wall_thickness`, `rib_width`, and
+`corner_radius` — independent of box height. With default `Rib_Width=6`
+that yields ~38 mm. `_box_attachment_rib_cut` only clips the
+inside-the-wall zone up to `wall_thickness + outer_height`, so on
+boxes shorter than that, the foot's rib-shape support column
+overshoots the clipper and survives as floating slivers above the box
+top. Most visible on small `Bottom_Height` values; subtler but still
+present on default sizes.
+
+The hinge body doesn't have this problem because it builds at
+`outer_height` and mirrors downward, so any overshoot lands below
+`z=0` where the second clipper catches it. The stand foot has no
+analogous downward-mirror, so the symmetry breaks.
+
+Fix: clamp `rib_hull_height` to `$b_outer_height` in
+`_box_stand_foot_body`. The clamp only affects the structural support
+column inside the box wall (which would have been clipped anyway on
+tall boxes); the visible eyelet bulge at low Z is unaffected. With
+`Stand_On_Back=false` the geometry is byte-identical to before.
+
+- `src/rugged-box-library.scad` — single-line `min(..., $b_outer_height)`
+  wrapper around the existing formula.
+
 ## 2026-05-05 — `[upstream-candidate]` End-stop bar follows stand-foot contour
 
 When `Stand_On_Back=true` and `Hinge_End_Stops=true` are both enabled,
