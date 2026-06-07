@@ -54,6 +54,32 @@ shrunk/expanded layouts).
   baseplate generation, and stacking-lip generation rebound to
   `Cell_Size`.
 
+## 2026-06-07 — Documentation: project status, examples, slicer-warnings note
+
+Three new `README.md` sections:
+
+- **Project status** — flags this as a shared personal project and
+  work-in-progress. Notes that only a small number of parameter
+  combinations have been exported to STL and test-printed; cautions
+  users to inspect customized geometry before printing, particularly
+  given this fork's divergence from `smkent/monoscad` and use of a
+  newer `kennetek/gridfinity-rebuilt-openscad` API; invites issue
+  reports for untested permutations.
+- **Examples** — points at [`examples/`](examples/) as the home for
+  known-good tested STL combinations (currently
+  [`43mm_gridfinity_4x3`](examples/43mm_gridfinity_4x3/)).
+- **A note on slicer warnings (cosmetic)** — documents why slicers
+  report hundreds of "facets fixed" / "errors" on the exported STLs.
+  The meshes are manifold and closed (verified via edge-incidence
+  analysis); the count is OpenSCAD CGAL/Manifold boolean-tessellation
+  noise (~400 zero-area triangles baseline per part) plus a small
+  number of coplanar surface duplicates. Slicers auto-clean both and
+  the slice output is unaffected.
+
+Also re-exported [`examples/43mm_gridfinity_4x3/rugged-box-gridfinity-4x3x6x3-top.stl`](examples/43mm_gridfinity_4x3/rugged-box-gridfinity-4x3x6x3-top.stl)
+as ASCII (was binary) — the analysis comparing baseline tessellation
+counts across parts used this re-export.
+
 ## 2026-05-06 — `[upstream-candidate]` Fix stand-foot floating slivers on short boxes
 
 `_box_stand_foot_body` computed `rib_hull_height` from
