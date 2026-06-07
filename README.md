@@ -20,10 +20,32 @@ library to a newer API than upstream monoscad targets. If you customize
 the box for your own use case, render it carefully and inspect the
 geometry before committing filament to it.
 
-**Issue reports are welcome and appreciated** — if you find a
-parameter combination that produces a broken model, a slicing problem
-not explained below, or a feature that doesn't behave as documented,
-please open an issue. PRs welcome too.
+**Testing environment.** Rendering and validation is done on Apple
+silicon (macOS) with OpenSCAD **2026.06.06 (git 49366181)**. Going
+forward, the latest OpenSCAD on macOS will be the primary testing
+environment used by the author. Other operating systems, processor
+architectures, or older OpenSCAD versions may work fine — or may not
+— but they aren't actively tested.
+
+**Reporting issues — please include repeatability details.** Issue
+reports are very welcome! To help investigate effectively, please
+include enough detail to reproduce what you saw. At a minimum:
+
+- **Customizer settings used** — a screenshot of the customizer
+  panel, the saved parameter-set JSON, or just a list of which values
+  you changed from the file defaults
+- **OpenSCAD version** — Help → About inside the app (include the
+  build / git hash if shown)
+- **Operating system and architecture** — e.g. "Ubuntu 24.04 on
+  x86_64" or "Windows 11 on ARM"
+- **What you observed** — short summary of the problem (preview
+  rendered differently than expected? slicer rejected the STL? a
+  printed part didn't fit?)
+- **Helpful extras** — the rendered STL, a screenshot of the
+  OpenSCAD preview, or the slicer's error pane all speed things up
+
+The more reproducible the report, the faster it can be looked into.
+PRs are also welcome.
 
 ## Examples
 

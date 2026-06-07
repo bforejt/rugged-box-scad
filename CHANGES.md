@@ -80,6 +80,14 @@ Also re-exported [`examples/43mm_gridfinity_4x3/rugged-box-gridfinity-4x3x6x3-to
 as ASCII (was binary) — the analysis comparing baseline tessellation
 counts across parts used this re-export.
 
+Follow-up: expanded the **Project status** section with a **Testing
+environment** note (Apple silicon, OpenSCAD 2026.06.06 git 49366181,
+macOS as primary target — other OSes / older OpenSCAD versions may
+work but aren't actively tested) and turned the issue-reports
+paragraph into a checklist of repeatability details (customizer
+settings, OpenSCAD version, OS/arch, summary, optional STL/screenshot)
+so reports come in with enough detail to investigate.
+
 ## 2026-05-06 — `[upstream-candidate]` Fix stand-foot floating slivers on short boxes
 
 `_box_stand_foot_body` computed `rib_hull_height` from
