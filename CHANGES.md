@@ -88,6 +88,16 @@ paragraph into a checklist of repeatability details (customizer
 settings, OpenSCAD version, OS/arch, summary, optional STL/screenshot)
 so reports come in with enough detail to investigate.
 
+Follow-up 2: dropped the *"OpenSCAD 2021.01 or newer recommended"*
+line in the Setup section in favor of a pointer to the latest release
+/ development snapshot (we don't actively test older versions, so
+recommending them was misleading). Added a **Compatible Gridfinity
+bins** subsection noting that
+[ostat/gridfinity_extended_openscad](https://github.com/ostat/gridfinity_extended_openscad)
+is the bin-generating companion project the author uses; its bins
+have mated correctly with this box's bottom baseplate and stacking
+lid in test prints.
+
 ## 2026-05-06 — `[upstream-candidate]` Fix stand-foot floating slivers on short boxes
 
 `_box_stand_foot_body` computed `rib_hull_height` from

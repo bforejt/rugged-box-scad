@@ -66,6 +66,16 @@ Two top-level designs in [`src/`](src/):
 - [`rugged-box-library.scad`](src/rugged-box-library.scad) — shared
   library implementing both
 
+### Compatible Gridfinity bins
+
+The author's primary use case for the Gridfinity variant is filling
+the box with bins generated from
+[ostat/gridfinity_extended_openscad](https://github.com/ostat/gridfinity_extended_openscad).
+In test prints those bins have mated correctly with the box's bottom
+baseplate and (when enabled) the lid's stacking-lip surface — so if
+you want a known-good source for bins to drop in, that's the
+companion project that's been tried here.
+
 ## Setup
 
 ```sh
@@ -74,9 +84,11 @@ git clone --recurse-submodules https://github.com/<you>/rugged-box-scad.git
 git submodule update --init --recursive
 ```
 
-OpenSCAD 2021.01 or newer recommended. Open any `.scad` file in
-[`src/`](src/) directly — relative `use`/`include` paths resolve to the
-submodule under [`lib/`](lib/), so no `OPENSCADPATH` setup is needed.
+Use a recent OpenSCAD — the latest release or development snapshot is
+what the author tests against (see *Testing environment* above for the
+exact build). Open any `.scad` file in [`src/`](src/) directly —
+relative `use`/`include` paths resolve to the submodule under
+[`lib/`](lib/), so no `OPENSCADPATH` setup is needed.
 
 ## License & attribution
 
