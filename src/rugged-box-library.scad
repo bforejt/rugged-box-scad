@@ -1393,22 +1393,18 @@ module _box_hinge_ribs_top() {
     }
 }
 
-// Squared-off rectangular extension unioned at each lid hinge eyelet
-// when Stand_On_Back is active. The eyelet by itself is a cylinder,
-// which makes a point contact with the floor when the closed box is
-// laid on its back face. This adds a slab whose flat outer face is
-// co-planar with the eyelet's outermost tangent, giving the lid a
-// stable rectangular footprint to share the load with the bottom's
-// stand-on-back feet.
+// When Stand_On_Back is active, extend the rib material on the lid's
+// back face at each hinge group so it runs from the hinge eyelet
+// position up to the lid's outer-top level — giving the closed box a
+// flat strip of contact along the full lid back face when laid on
+// its back. The hinge eyelet itself stays a rounded cylinder.
 module _box_hinge_top_stand_foot(width=0) {
     difference() {
-        translate([0, 0, $b_outer_height])
         translate([$b_hinge_screw_offset, 0, 0])
         rotate([90, 0, 0])
         translate([0, 0, -width / 2])
         linear_extrude(height=width)
-        translate([0, -screw_eyelet_radius])
-        square([screw_eyelet_radius, 2 * screw_eyelet_radius]);
+        square([screw_eyelet_radius, $b_outer_height]);
         _box_attachment_rib_cut(width);
     }
 }
