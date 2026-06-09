@@ -54,6 +54,50 @@ shrunk/expanded layouts).
   baseplate generation, and stacking-lip generation rebound to
   `Cell_Size`.
 
+## 2026-06-07 — Documentation: project status, examples, slicer-warnings note
+
+Three new `README.md` sections:
+
+- **Project status** — flags this as a shared personal project and
+  work-in-progress. Notes that only a small number of parameter
+  combinations have been exported to STL and test-printed; cautions
+  users to inspect customized geometry before printing, particularly
+  given this fork's divergence from `smkent/monoscad` and use of a
+  newer `kennetek/gridfinity-rebuilt-openscad` API; invites issue
+  reports for untested permutations.
+- **Examples** — points at [`examples/`](examples/) as the home for
+  known-good tested STL combinations (currently
+  [`43mm_gridfinity_4x3`](examples/43mm_gridfinity_4x3/)).
+- **A note on slicer warnings (cosmetic)** — documents why slicers
+  report hundreds of "facets fixed" / "errors" on the exported STLs.
+  The meshes are manifold and closed (verified via edge-incidence
+  analysis); the count is OpenSCAD CGAL/Manifold boolean-tessellation
+  noise (~400 zero-area triangles baseline per part) plus a small
+  number of coplanar surface duplicates. Slicers auto-clean both and
+  the slice output is unaffected.
+
+Also re-exported [`examples/43mm_gridfinity_4x3/rugged-box-gridfinity-4x3x6x3-top.stl`](examples/43mm_gridfinity_4x3/rugged-box-gridfinity-4x3x6x3-top.stl)
+as ASCII (was binary) — the analysis comparing baseline tessellation
+counts across parts used this re-export.
+
+Follow-up: expanded the **Project status** section with a **Testing
+environment** note (Apple silicon, OpenSCAD 2026.06.06 git 49366181,
+macOS as primary target — other OSes / older OpenSCAD versions may
+work but aren't actively tested) and turned the issue-reports
+paragraph into a checklist of repeatability details (customizer
+settings, OpenSCAD version, OS/arch, summary, optional STL/screenshot)
+so reports come in with enough detail to investigate.
+
+Follow-up 2: dropped the *"OpenSCAD 2021.01 or newer recommended"*
+line in the Setup section in favor of a pointer to the latest release
+/ development snapshot (we don't actively test older versions, so
+recommending them was misleading). Added a **Compatible Gridfinity
+bins** subsection noting that
+[ostat/gridfinity_extended_openscad](https://github.com/ostat/gridfinity_extended_openscad)
+is the bin-generating companion project the author uses; its bins
+have mated correctly with this box's bottom baseplate and stacking
+lid in test prints.
+
 ## 2026-05-06 — `[upstream-candidate]` Fix stand-foot floating slivers on short boxes
 
 `_box_stand_foot_body` computed `rib_hull_height` from
