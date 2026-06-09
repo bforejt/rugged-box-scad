@@ -1523,15 +1523,17 @@ module _box_stand_foot_body(width=0) {
 
 module _box_stand_feet() {
     if ($b_part == "bottom" && $b_stand_on_back) {
-        // Width matches the lid stand-foot side widths (_box_rib_width
-        // per foot) so the bottom corner feet and the lid hinge slabs
-        // line up along the back wall — the closed box presents a
-        // visually symmetric pair when laid on the back.
+        // One continuous foot per hinge group, centered, spanning the
+        // full outer-to-outer width of the lid hinge assembly above
+        // ($b_latch_width + 2 × $b_rib_width). No rib_pair — the foot
+        // is a single piece, so the curve hull around the eyelet body
+        // is one smooth shape (no step between paired corner feet),
+        // and it lines up directly with the lid hinge / lid
+        // stand-foot extension above it.
         _box_attachment_placement(hinge=true)
-        _box_attachment_rib_pair()
         translate([-$b_rib_width / 2, 0, 0])
         rotate([0, 0, 90])
-        _box_stand_foot_body(width=$b_rib_width);
+        _box_stand_foot_body(width=$b_latch_width + 2 * $b_rib_width);
     }
 }
 
