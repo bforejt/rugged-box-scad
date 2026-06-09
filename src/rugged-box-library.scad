@@ -1375,17 +1375,41 @@ module _box_hinge_ribs_top() {
         translate([0, hinge_rib_width + hinge_size_tolerance, 0]) {
             _box_hinge_rib_body($b_rib_width);
             _box_rib();
+            if ($b_stand_on_back) _box_hinge_top_stand_foot($b_rib_width);
         }
         // Solid hinge middle
-        rotate([0, 0, 90])
-        _box_hinge_rib_body(top_hinge_width, inner=true);
+        rotate([0, 0, 90]) {
+            _box_hinge_rib_body(top_hinge_width, inner=true);
+            if ($b_stand_on_back) _box_hinge_top_stand_foot(top_hinge_width);
+        }
     } else {
         // Single module hinge
         assert(top_hinge_width > 0, "No width available for top hinge");
         rotate([0, 0, 90]) {
             _box_rib(top_hinge_width);
             _box_hinge_rib_body(top_hinge_width);
+            if ($b_stand_on_back) _box_hinge_top_stand_foot(top_hinge_width);
         }
+    }
+}
+
+// Squared-off rectangular extension unioned at each lid hinge eyelet
+// when Stand_On_Back is active. The eyelet by itself is a cylinder,
+// which makes a point contact with the floor when the closed box is
+// laid on its back face. This adds a slab whose flat outer face is
+// co-planar with the eyelet's outermost tangent, giving the lid a
+// stable rectangular footprint to share the load with the bottom's
+// stand-on-back feet.
+module _box_hinge_top_stand_foot(width=0) {
+    difference() {
+        translate([0, 0, $b_outer_height])
+        translate([$b_hinge_screw_offset, 0, 0])
+        rotate([90, 0, 0])
+        translate([0, 0, -width / 2])
+        linear_extrude(height=width)
+        translate([0, -screw_eyelet_radius])
+        square([screw_eyelet_radius, 2 * screw_eyelet_radius]);
+        _box_attachment_rib_cut(width);
     }
 }
 
