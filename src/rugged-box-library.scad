@@ -1523,18 +1523,11 @@ module _box_stand_foot_body(width=0) {
 
 module _box_stand_feet() {
     if ($b_part == "bottom" && $b_stand_on_back) {
-        // One foot per hinge body. Slid outward via
-        // _box_attachment_rib_pair so each foot sits directly under a
-        // hinge eyelet (under the screw axis). Width = $b_rib_width,
-        // matching the lid's side hinge component above it — the
-        // narrower foot relative to the wider bottom hinge body above
-        // creates a deliberate step that lines the foot up directly
-        // with the lid stand-foot slab column.
         _box_attachment_placement(hinge=true)
         _box_attachment_rib_pair()
         translate([-$b_rib_width / 2, 0, 0])
         rotate([0, 0, 90])
-        _box_stand_foot_body(width=$b_rib_width);
+        _box_stand_foot_body(width=$b_rib_width * 2);
     }
 }
 
