@@ -1400,26 +1400,35 @@ module _box_hinge_ribs_top() {
 // its back. The hinge eyelet itself stays a rounded cylinder.
 //
 // The slab extends inward past the back wall so it merges fully with
-// the lid body (no V-notch where it meets the existing rib_shape),
-// and the outer-bottom corner gets a 45° chamfer to mirror the box's
-// other outer edge chamfers.
+// the lid body (no V-notch where it meets the existing rib_shape).
+// The outer-bottom corner is rounded with radius = screw_eyelet_radius
+// to mirror the curve on the bottom stand-foot (whose hull blends the
+// support column into an eyelet-sized cylinder), keeping the two
+// halves of the box visually balanced when laid on the back.
 module _box_hinge_top_stand_foot(width=0) {
-    chamfer = $b_edge_radius * 2;
+    curve_r = screw_eyelet_radius;
     inner_x = -($b_hinge_screw_offset + $b_corner_radius + $b_wall_thickness);
     outer_x = screw_eyelet_radius;
     bot_z = 0;
     top_z = $b_outer_height;
+    arc_n = 24;
+    arc_cx = outer_x - curve_r;
+    arc_cy = bot_z + curve_r;
+    arc_pts = [
+        for (i = [0:arc_n])
+        let (a = -90 + 90 * i / arc_n)
+        [arc_cx + curve_r * cos(a), arc_cy + curve_r * sin(a)]
+    ];
     translate([$b_hinge_screw_offset, 0, 0])
     rotate([90, 0, 0])
     translate([0, 0, -width / 2])
     linear_extrude(height=width)
-    polygon([
-        [inner_x, bot_z],
-        [outer_x - chamfer, bot_z],
-        [outer_x, bot_z + chamfer],
-        [outer_x, top_z],
-        [inner_x, top_z],
-    ]);
+    polygon(concat(
+        [[inner_x, bot_z]],
+        arc_pts,
+        [[outer_x, top_z]],
+        [[inner_x, top_z]]
+    ));
 }
 
 module _box_hinge_rib_bottom(width=0) {
