@@ -1398,15 +1398,28 @@ module _box_hinge_ribs_top() {
 // position up to the lid's outer-top level — giving the closed box a
 // flat strip of contact along the full lid back face when laid on
 // its back. The hinge eyelet itself stays a rounded cylinder.
+//
+// The slab extends inward past the back wall so it merges fully with
+// the lid body (no V-notch where it meets the existing rib_shape),
+// and the outer-bottom corner gets a 45° chamfer to mirror the box's
+// other outer edge chamfers.
 module _box_hinge_top_stand_foot(width=0) {
-    difference() {
-        translate([$b_hinge_screw_offset, 0, 0])
-        rotate([90, 0, 0])
-        translate([0, 0, -width / 2])
-        linear_extrude(height=width)
-        square([screw_eyelet_radius, $b_outer_height]);
-        _box_attachment_rib_cut(width);
-    }
+    chamfer = $b_edge_radius * 2;
+    inner_x = -($b_hinge_screw_offset + $b_corner_radius + $b_wall_thickness);
+    outer_x = screw_eyelet_radius;
+    bot_z = 0;
+    top_z = $b_outer_height;
+    translate([$b_hinge_screw_offset, 0, 0])
+    rotate([90, 0, 0])
+    translate([0, 0, -width / 2])
+    linear_extrude(height=width)
+    polygon([
+        [inner_x, bot_z],
+        [outer_x - chamfer, bot_z],
+        [outer_x, bot_z + chamfer],
+        [outer_x, top_z],
+        [inner_x, top_z],
+    ]);
 }
 
 module _box_hinge_rib_bottom(width=0) {
