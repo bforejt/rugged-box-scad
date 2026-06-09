@@ -1523,19 +1523,18 @@ module _box_stand_foot_body(width=0) {
 
 module _box_stand_feet() {
     if ($b_part == "bottom" && $b_stand_on_back) {
-        // One foot per hinge group, centered directly under the hinge.
-        // Width matches the lid hinge's center body (top_hinge_width)
-        // so the foot sits beneath the middle of the hinge above and
-        // presents one smooth eyelet-hull curve at the floor-contact
-        // face.
-        hinge_rib_width = $b_rib_width * 2;
-        top_hinge_width = (
-            _latch_width() - hinge_rib_width - hinge_size_tolerance * 2
-        );
+        // One foot per hinge group, centered directly under the hinge
+        // group center. Width = $b_rib_width * 2 (matching the bottom
+        // hinge body's own width), so the foot reads as a continuation
+        // of the hinge directly below the screw axis.
+        //
+        // Note: no translate([-$b_rib_width/2, 0, 0]) — that translate
+        // is used by _box_hinge_rib_bottom to align with rib_pair
+        // positioning. Since this foot doesn't use rib_pair, that
+        // offset would push it off-center.
         _box_attachment_placement(hinge=true)
-        translate([-$b_rib_width / 2, 0, 0])
         rotate([0, 0, 90])
-        _box_stand_foot_body(width=top_hinge_width);
+        _box_stand_foot_body(width=$b_rib_width * 2);
     }
 }
 
