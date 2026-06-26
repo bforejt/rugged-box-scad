@@ -1,0 +1,33 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "4x3x6x3-43mm-handle": {
+            "Bottom_Height": "6",
+            "Cell_Size": "43",
+            "Gridfinity_Base_Style": "minimal",
+            "Gridfinity_Stackable": "false",
+            "Handle": "true",
+            "Hinge_End_Stops": "true",
+            "Label": "false",
+            "Label_Text": "Label",
+            "Label_Text_Size": "10",
+            "Latch_Screw_Separation": "16",
+            "Latch_Type": "clip",
+            "Latch_Width": "28",
+            "Length": "3",
+            "Lip_Seal_Type": "wedge",
+            "Lip_Thickness": "3",
+            "Part": "top",
+            "Reinforced_Corners": "true",
+            "Rib_Width": "6",
+            "Size_Tolerance": "0.20000000000000001",
+            "Stacking_Latches": "false",
+            "Stand_On_Back": "true",
+            "Third_Hinge": "false",
+            "Top_Grip": "true",
+            "Top_Height": "3",
+            "Wall_Thickness": "3",
+            "Width": "4"
+        }
+    }
+}
