@@ -1,0 +1,40 @@
+{
+    "schema": 1,
+    "scad": "src/rugged-box-gridfinity.scad",
+    "params": "params.json",
+    "param_set": "4x3x6x3-43mm-handle",
+    "export_format": "binstl",
+    "parts": [
+        {
+            "output": "rugged-box-gridfinity-4x3x6x3-bottom.stl",
+            "part": "bottom",
+            "overrides": { "Handle": false },
+            "note": "Box bottom, no handle"
+        },
+        {
+            "output": "rugged-box-gridfinity-4x3x6x3-bottom_w_handle.stl",
+            "part": "bottom",
+            "overrides": { "Handle": true },
+            "note": "Box bottom with handle mounts"
+        },
+        {
+            "output": "rugged-box-gridfinity-4x3x6x3-top.stl",
+            "part": "top",
+            "overrides": {},
+            "note": "Box top (lid)"
+        },
+        {
+            "output": "rugged-box-gridfinity-4x3x6x3-latchx2.stl",
+            "part": "latch",
+            "overrides": {},
+            "copies": 2,
+            "note": "Latch — print 2 copies"
+        },
+        {
+            "output": "rugged-box-gridfinity-handle.stl",
+            "part": "handle",
+            "overrides": {},
+            "note": "Handle"
+        }
+    ]
+}

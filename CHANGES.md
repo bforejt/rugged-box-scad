@@ -17,6 +17,35 @@ contributed back to monoscad as a PR.
   to match Stephen's original tested API; bumped to `910e22d` on
   2026-05-03 — see migration entry below.
 
+## 2026-06-25 — Add STL regeneration build system
+
+Added a manifest-driven build so example STLs can be regenerated from
+recorded parameter sets when the SCAD changes, instead of hand-exporting
+from the GUI.
+
+- `tools/render.py` (Python 3, stdlib only): subcommands `build`,
+  `snapshot`/`add`, `list`, `clean`. Drives the OpenSCAD CLI once per
+  part, loading a Customizer set with `-p/-P` and overriding `Part`
+  (and any per-part vars) with `-D`. Exports binary STL
+  (`--export-format binstl`) with `--enable predictible-output`.
+- Each `examples/<config>/` now carries a `build.json` manifest and a
+  co-located Customizer `params.json` (snapshotted from
+  `src/rugged-box-gridfinity.json`). Added these for
+  `43mm_gridfinity_4x3`, reproducing all five parts (bottom,
+  bottom_w_handle, top, latch ×2, handle). The five STLs were
+  regenerated through the new pipeline.
+- Incremental rebuilds key off mtimes, using OpenSCAD's `-d` dependency
+  output (covers the shared library and all gridfinity submodule files)
+  so editing `rugged-box-library.scad` or bumping the submodule
+  re-renders the affected parts.
+- `.gitignore`: un-ignore `examples/**/*.stl` (previously the example
+  STLs were force-added against the `*.stl` rule) and ignore the
+  `examples/**/*.d` dependency cache.
+- Determinism caveat: `--enable predictible-output` makes simple parts
+  byte-stable but not boolean-heavy ones (the Gridfinity `top` drifts a
+  few cosmetic degenerate triangles per render), so incremental builds
+  use mtimes, not content hashes.
+
 ## 2026-05-03 — Initial import
 
 - Imported the three rugged-box sources listed above into `src/`.
